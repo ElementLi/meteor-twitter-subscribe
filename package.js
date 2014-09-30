@@ -1,6 +1,7 @@
 Package.describe({
   summary: "Twitter signup with email required, based on Accounts UI unstyled",
   version: "1.0.0",
+  name: "yong:twitter-email-subscribe",
   git: "https://github.com/feelsys/meteor-twitter-subscribe"
 });
 
