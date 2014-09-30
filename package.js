@@ -1,7 +1,7 @@
 Package.describe({
   summary: "Twitter signup with email required, based on Accounts UI unstyled",
   version: "1.0.0",
-  // git: " \* Fill me in! *\ "
+  git: "https://github.com/feelsys/meteor-twitter-subscribe"
 });
 
 Package.onUse(function(api) {
