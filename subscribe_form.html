@@ -1,0 +1,127 @@
+<template name="subscribeForm">
+  <div class="row container">
+      <div id="welcome-form" style="display: block;">
+          <form>
+              <div class="col-lg-3">
+                  <label class="email-label form-label lead" for="email">Please enter your email:</label>
+              </div>
+              <div class="col-lg-6">
+                  <div class="form-group email-form-group" data-class="input-block">
+                      <input type="email" id="email" class="form-control form-input" placeholder="We’ll use it to send you an invitation to the Open Beta" required>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+  <div class="spacer-20"></div>
+  <div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-4">
+          <div id="access-private-beta" class="button">
+              <div id="subscribe-buttons" class="subscribe-buttons-dropdown-align-{{align}}">
+                {{#if currentUser}}
+                  {{#if loggingIn}}
+                    {{! We aren't actually logged in yet; we're just setting Meteor.userId
+                        optimistically during an at-startup login-with-token. We expose this
+                        state so other UIs can treat it specially, but we'll just treat it
+                        as logged out. }}
+                    <div class="subscribe-buttons-with-only-one-button">
+                      {{> _subscribeButton}}
+                    </div>
+                  {{else}}
+                    {{> _subscribeButtonLoggedIn}}
+                  {{/if}}
+                {{else}}
+                  {{> _subscribeButtonLoggedOut}}
+                {{/if}}
+              </div>
+          </div>
+      </div>
+      <div class="col-lg-5"></div>
+  </div>
+</template>
+
+<template name="_subscribeButtonLoggedIn">
+  <div class="subscribe-buttons-with-only-one-button">
+    {{> _subscribeButtonLoggedInSingleLogoutButton}}
+  </div>
+</template>
+
+<template name="_subscribeButtonLoggedOut">
+  {{#if configurationLoaded}}
+    {{#with singleService}} {{! at this point there must be only one configured services }}
+      <div class="subscribe-buttons-with-only-one-button">
+        {{#if loggingIn}}
+          {{> _subscribeButtonLoggingInSingleLoginButton}}
+        {{else}}
+          {{> _subscribeButton}}
+        {{/if}}
+      </div>
+    {{/with}}
+  {{/if}}
+</template>
+
+<!-- used in various places to display messages to user -->
+<template name="_subscribeButtonMessages">
+  {{#if errorMessage}}
+    <div class="message error-message">{{errorMessage}}</div>
+  {{/if}}
+  {{#if infoMessage}}
+    <div class="message info-message">{{infoMessage}}</div>
+  {{/if}}
+</template>
+
+<template name="_subscribeButtonLoggingIn">
+  {{> _subscribeButtonLoggingInPadding}}
+  <div class="loading">&nbsp;</div>
+  {{> _subscribeButtonLoggingInPadding}}
+</template>
+
+<template name="_subscribeButtonLoggingInPadding">
+  {{! invisible div used for correct height of surrounding div. this ensures
+      that the _loginButtons template is always the same height
+      and the rest of the page doesn't move up and down }}
+  <div class="subscribe-buttons-padding">
+    <div class="subscribe-button single-subscribe-button" style="visibility: hidden;" id="subscribe-buttons-logout">&nbsp;</div>
+  </div>
+</template>
+
+<template name="_subscribeButton">
+  <div class="login-text-and-button">
+    <div class="subscribe-button single-subscribe-button {{#unless configured}}configure-button{{/unless}} button disabled" id="subscribe-buttons-{{name}}">
+      {{#if configured}}
+        {{#if isTwitter}}
+          <p class="text-center">
+            <span class="text-besides-image subscribe-text-{{name}} text-center">
+              <i class="fa fa-twitter twitter-icon"></i>
+              <div class="button-text"> Request access to beta </div>
+            </span>
+          </p>
+          {{#if status}}
+            <div class="alert {{class}}">{{{message}}}</div>
+          {{/if}}
+        {{/if}}
+      {{else}}
+        <span class="text-besides-image configure-text-{{name}}">'accounts-twitter' package did not install correctly, please reinstall it.</span>
+      {{/if}}
+    </div>
+  </div>
+</template>
+
+<template name="_subscribeButtonLoggingInSingleLoginButton">
+  <div class="login-text-and-button">
+    {{> _subscribeButtonLoggingIn}}
+  </div>
+</template>
+
+<template name="_subscribeButtonLoggedInSingleLogoutButton">
+  <div class="login-text-and-button">
+    <div class="login-display-name">
+      Hi {{displayName}}, you've already signed this invitation with {{usersEmail}}.
+      <br />
+      If you want to add a new email to the subscription or this is not your account, please press 'Sign Out' botton.
+    </div>
+    <div class="btn btn-default subscribe-button single-subscribe-button" id="subscribe-buttons-logout">Sign Out</div> 
+  </div>
+</template>
+
