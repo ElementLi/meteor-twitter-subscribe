@@ -8,7 +8,7 @@ Package.describe({
 Package.onUse(function(api) {
   api.versionsFrom('METEOR@0.9.3');
   api.use(['tracker', 'service-configuration', 'accounts-base',
-           'underscore', 'templating', 'session'], 'client');
+           'underscore', 'templating', 'session', 'accounts-ui-unstyled'], 'client');
 
   api.use('mongo', ['client', 'server']);
   
@@ -29,18 +29,7 @@ Package.onUse(function(api) {
   api.addFiles([
     'yong:twitter-signup-with-email.js',
     'subscribe_form.html',
-    'login_buttons.html',
-    'login_buttons_single.html',
-    'login_buttons_dropdown.html',
-    'login_buttons_dialogs.html',
-
-    'login_buttons_session.js',
-
     'subscribe_form.js',
-    'login_buttons.js',
-    'login_buttons_single.js',
-    'login_buttons_dropdown.js',
-    'login_buttons_dialogs.js',
     'styles.less'], 'client');
 
   if(api.export) api.export('Subscribers')
